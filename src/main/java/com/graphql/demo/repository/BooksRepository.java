@@ -2,6 +2,7 @@ package com.graphql.demo.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -53,5 +54,34 @@ public class BooksRepository {
 	public List<Book> findBooksWithPriceLessThanEqualTo(String price) {
 		List<Book> allBooks = this.books;
 		return allBooks.stream().filter(b -> b.getPrice().equals(price)).collect(Collectors.toList());
+	}
+
+	public Book addBook(String title, String price, String author, String isbn) {
+		Book newBook = new Book(title, price, author, isbn);
+		this.books.add(newBook);
+		return newBook;
+	}
+
+	public Book updateBook(String title, String price, String author, String isbn) {
+		List<Book> allBooks = this.books;
+		Optional<Book> bookToUpdate = allBooks.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst();
+		if(bookToUpdate.isPresent()) {
+			Book book = bookToUpdate.get();
+			book.setAuthor(author);
+			book.setPrice(price);
+			book.setTitle(title);
+			book.setIsbn(isbn);
+			return book;
+		}
+		return null;
+	}
+
+	public Book deleteBook(String isbn) {
+		List<Book> allBooks = this.books;
+		Optional<Book> bookToUpdate = allBooks.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst();
+		if(bookToUpdate.isPresent()) {
+			System.out.println("Book removed");
+		}
+		return null;
 	}
 }
