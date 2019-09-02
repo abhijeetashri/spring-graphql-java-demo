@@ -1,0 +1,15 @@
+schema {
+ query: Query
+}
+
+type Query {
+ books: [Book]
+ booksByMinimumPrice(min: Int!): [Book]
+}
+
+type Book {
+ title: String
+ price: String
+ author: String
+ isbn: String
+}
